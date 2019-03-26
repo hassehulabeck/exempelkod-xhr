@@ -1,0 +1,67 @@
+<html>
+
+<head>
+    <title>AJAX</title>
+</head>
+
+<body>
+</body>
+
+</html>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    var url = "https://www.hulabeck.se/html/temp/products.json";
+
+    var xhr = new XMLHttpRequest;
+    var res;
+
+    xhr.onreadystatechange = function() {
+        console.log(xhr.readyState);
+        if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+                res = xhr.response;
+
+                // Loopa igenom alla namn.
+                res.products.forEach(function(product) {
+                    console.log(product.name + ": " + product.consumerPrice);
+                })
+            }
+            if (xhr.status == 500) {
+                console.log("serverfel");
+            }
+
+        }
+    }
+
+    xhr.open("GET", url);
+    xhr.responseType = "json";
+    xhr.send();
+
+    var fetchResult;
+    var axiosResult;
+
+    fetch(url)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(myJson) {
+            return JSON.stringify(myJson);
+        })
+        .then(function(x) {
+            fetchResult = x;
+        })
+        .catch(function(error) {
+            console.error(error);
+        })
+
+    async function getProducts() {
+        try {
+            const response = await axios.get(url);
+            axiosResult = response;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    getProducts();
+</script>
